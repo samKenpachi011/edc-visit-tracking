@@ -9,8 +9,8 @@ from edc.subject.appointment.constants import IN_PROGRESS, DONE, INCOMPLETE, NEW
 from edc.subject.appointment.models import Appointment
 from edc.subject.consent.models import BaseConsentedUuidModel
 
-from ..choices import VISIT_REASON
-from ..managers import BaseVisitTrackingManager
+from edc_visit_tracking import VISIT_REASON
+from edc_visit_tracking import BaseVisitTrackingManager
 from visit_tracking.constants import VISIT_REASON_REQUIRED_CHOICES, VISIT_REASON_NO_FOLLOW_UP_CHOICES, VISIT_REASON_FOLLOW_UP_CHOICES
 
 

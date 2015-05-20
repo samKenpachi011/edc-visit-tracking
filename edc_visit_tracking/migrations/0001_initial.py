@@ -17,4 +17,4 @@ class Migration(SchemaMigration):
         
     }
 
-    complete_apps = ['visit_tracking']
+    complete_apps = ['edc_visit_tracking']
