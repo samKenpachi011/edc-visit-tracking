@@ -1,3 +1,2 @@
 from .base_visit_tracking import BaseVisitTracking
-from .previous_visit_mixin import PreviousVisitMixin, PreviousVisitError
 from .signals import base_visit_tracking_check_in_progress_on_post_save
