@@ -11,17 +11,17 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='edc-visit-tracking',
-    version='0.1.0',
+    version='0.1.0dev',
     author=u'Erik van Widenfelt',
     author_email='ew2789@gmail.com',
     packages=find_packages(),
     include_package_data=True,
     url='https://github.com/botswana-harvard/edc-visit-tracking',
     license='GPL license, see LICENSE',
-    description='Base classes for off study process in the Edc.',
+    description='Base classes for visit reports / tracking in the Edc.',
     long_description=README,
     zip_safe=False,
-    keywords='django participant off-study',
+    keywords='django visit tracking',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
