@@ -3,7 +3,8 @@ __pycache__/
 *.py[cod]
 .project
 .pydevproject
-
+.settings
+edc_visit_tracking/db.sqlite3
 # C extensions
 *.so
 
