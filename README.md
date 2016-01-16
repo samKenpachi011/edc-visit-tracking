@@ -9,6 +9,15 @@ Track study participant visits
 
 There are variations on how to do this but a typical example for a subject that requires ICF would look like this:
 
+    from edc_base.audit_trail import AuditTrail
+    from edc_base.model.models import BaseUuidModel
+    from edc_consent.models import RequiresConsentMixin
+    from edc_meta_data.models import CrfMetaDataMixin
+    from edc_offstudy.models import OffStudyMixin
+    from edc_sync.models import SyncModelMixin
+    from edc_visit_tracking.constants import VISIT_REASON_NO_FOLLOW_UP_CHOICES
+    from edc_visit_tracking.models import VisitModelMixin, PreviousVisitMixin, CaretakerFieldsMixin
+    
     class SubjectVisit(OffStudyMixin, SyncModelMixin, PreviousVisitMixin, CrfMetaDataMixin,
                   RequiresConsentMixin, CaretakerFieldsMixin, VisitModelMixin, BaseUuidModel):
     
@@ -61,9 +70,47 @@ If the subject does not require ICF, such as an infant, any form that has the DO
         class Meta:
             app_label = 'my_app'
 
-            
-## Declaring forms:
+### Declaring a CRF
+
+    from edc_meta_data.managers import CrfMetaDataManager
+    from edc_base.audit_trail import AuditTrail
+    from edc_base.model.models import BaseUuidModel
+    from edc_consent.models import RequiresConsentMixin
+    from edc_offstudy.models import OffStudyMixin
+    from edc_sync.models import SyncModelMixin
+    from edc_visit_tracking.managers import CrfModelManager
+    from edc_visit_tracking.models import CrfModelMixin
+
+    class MyCrfModel(CrfModelMixin, SyncModelMixin, OffStudyMixin,
+                       RequiresConsentMixin, BaseUuidModel
     
+        consent_model = SubjectConsent
+        off_study_model = ('my_app', 'SubjectOffStudy')
+        subject_visit = models.OneToOneField(SubjectVisit)
+
+        question_one = models.CharField(
+            max_lenght-10)
+        question_two = models.CharField(
+            max_lenght-10)
+        question_three = models.CharField(
+            max_lenght-10)
+        ...
+        objects = CrfModelManager()
+        history = AuditTrail()
+        entry_meta_data_manager = CrfMetaDataManager(MaternalVisit)
+    
+        def natural_key(self):
+            return (self.subject_visit.natural_key(), )
+        natural_key.dependencies = ['my_app.subject_visit']
+    
+        def __str__(self):
+            return str(self.get_visit())
+
+        class Meta:
+            app_label = 'my_app'
+
+### Declaring forms:
+
 The `VisitFormMixin` includes a number of common validations in the `clean` method:
 
     class SubjectVisitForm(VisitFormMixin, forms.ModelForm):
