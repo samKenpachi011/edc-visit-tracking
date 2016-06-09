@@ -38,7 +38,7 @@ install:
   - pip install coveralls
   - pip install M2Crypto
   - pip install pyodbc
-  - pip install pycups
+#  - pip install pycups
   - pip install mysql-python
   - pip install -q -r requirements.txt
 
