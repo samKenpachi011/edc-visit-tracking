@@ -37,11 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_crypto_fields.apps.AppConfig',
-    'django_revision.apps.AppConfig',
-    'edc_protocol.apps.AppConfig',
     'edc_registration.apps.AppConfig',
-    'edc_visit_tracking.apps.AppConfig',
     'example.apps.AppConfig',
 ]
 
@@ -55,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'edc_visit_tracking.urls'
+ROOT_URLCONF = 'example.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'edc_visit_tracking.wsgi.application'
+WSGI_APPLICATION = 'example.wsgi.application'
 
 
 # Database

@@ -16,9 +16,9 @@ There are variations on how to do this but a typical example for a subject that 
     from edc_offstudy.models import OffStudyMixin
     from edc_sync.models import SyncModelMixin
     from edc_visit_tracking.constants import VISIT_REASON_NO_FOLLOW_UP_CHOICES
-    from edc_visit_tracking.models import VisitModelMixin, PreviousVisitMixin, CaretakerFieldsMixin
+    from edc_visit_tracking.models import VisitModelMixin, PreviousVisitModelMixin, CaretakerFieldsMixin
     
-    class SubjectVisit(OffStudyMixin, SyncModelMixin, PreviousVisitMixin, CrfMetaDataMixin,
+    class SubjectVisit(OffStudyMixin, SyncModelMixin, PreviousVisitModelMixin, CrfMetaDataMixin,
                   RequiresConsentMixin, CaretakerFieldsMixin, VisitModelMixin, BaseUuidModel):
     
         consent_model = SubjectConsent
@@ -45,7 +45,7 @@ There are variations on how to do this but a typical example for a subject that 
 
 If the subject does not require ICF, such as an infant, any form that has the DOB will do for `consent_model`:
 
-    class InfantVisit(OffStudyMixin, SyncModelMixin, PreviousVisitMixin, CrfMetaDataMixin,
+    class InfantVisit(OffStudyMixin, SyncModelMixin, PreviousVisitModelMixin, CrfMetaDataMixin,
                   RequiresConsentMixin, CaretakerFieldsMixin, VisitModelMixin, BaseUuidModel):
     
         consent_model = InfantBirthModel
@@ -122,6 +122,6 @@ The `VisitFormMixin` includes a number of common validations in the `clean` meth
 
 The `CrfModelMixin` is required for all CRF models. CRF models have a key to the visit model.
 
-## `PreviousVisitMixin`
+## `PreviousVisitModelMixin`
 
-The `PreviousVisitMixin` ensures that visits are entered in sequence.
+The `PreviousVisitModelMixin` ensures that visits are entered in sequence.
