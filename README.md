@@ -12,7 +12,7 @@ There are variations on how to do this but a typical example for a subject that 
     from simple_history.models import HistoricalRecords as AuditTrail
     from edc_base.model.models import BaseUuidModel
     from edc_consent.models import RequiresConsentMixin
-    from edc_meta_data.models import CrfMetaDataMixin
+    from edc_metadata.models import CrfMetaDataMixin
     from edc_offstudy.models import OffStudyMixin
     from edc_sync.models import SyncModelMixin
     from edc_visit_tracking.constants import VISIT_REASON_NO_FOLLOW_UP_CHOICES
@@ -72,7 +72,7 @@ If the subject does not require ICF, such as an infant, any form that has the DO
 
 ### Declaring a CRF
 
-    from edc_meta_data.managers import CrfMetaDataManager
+    from edc_metadata.managers import CrfMetaDataManager
     from simple_history.models import HistoricalRecords as AuditTrail
     from edc_base.model.models import BaseUuidModel
     from edc_consent.models import RequiresConsentMixin
