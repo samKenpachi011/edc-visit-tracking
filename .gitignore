@@ -4,6 +4,7 @@ __pycache__/
 .project
 .pydevproject
 .settings
+db.*
 test-*
 edc_visit_tracking/db.sqlite3
 # C extensions
