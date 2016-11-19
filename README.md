@@ -2,112 +2,47 @@
 
 # edc-visit-tracking
 
-Track study participant visits
+Track study participant visit reports.
 
 
 ### Declaring a visit model
 
-There are variations on how to do this but a typical example for a subject that requires ICF would look like this:
+For a subject that requires ICF would look like this:
 
-    from simple_history.models import HistoricalRecords as AuditTrail
-    from edc_base.model.models import BaseUuidModel
-    from edc_consent.models import RequiresConsentMixin
-    from edc_metadata.models import CrfMetaDataMixin
-    from edc_offstudy.models import OffStudyMixin
-    from edc_sync.models import SyncModelMixin
-    from edc_visit_tracking.constants import VISIT_REASON_NO_FOLLOW_UP_CHOICES
-    from edc_visit_tracking.models import VisitModelMixin, PreviousVisitModelMixin, CaretakerFieldsMixin
+    class SubjectVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin, RequiresConsentMixin, BaseUuidModel):
     
-    class SubjectVisit(OffStudyMixin, SyncModelMixin, PreviousVisitModelMixin, CrfMetaDataMixin,
-                  RequiresConsentMixin, CaretakerFieldsMixin, VisitModelMixin, BaseUuidModel):
-    
-        consent_model = SubjectConsent
-    
-        off_study_model = ('my_app', 'SubjectOffStudy')
-    
-        death_report_model = ('my_app', 'SubjectDeathReport')
-    
-        history = AuditTrail()
-    
-        def get_visit_reason_choices(self):
-            return VISIT_REASON
-    
-        def get_visit_reason_no_follow_up_choices(self):
-            """ Returns the visit reasons that do not imply any data
-            collection; that is, the subject is not available. """
-            dct = {}
-            for item in VISIT_REASON_NO_FOLLOW_UP_CHOICES:
-                dct.update({item: item})
-            return dct
-    
-        class Meta:
-            app_label = 'my_app'
+        class Meta(VisitModelMixin.Meta):
+            consent_model = 'edc_example.subjectconsent'
+            app_label = 'edc_example'
 
-If the subject does not require ICF, such as an infant, any form that has the DOB will do for `consent_model`:
 
-    class InfantVisit(OffStudyMixin, SyncModelMixin, PreviousVisitModelMixin, CrfMetaDataMixin,
-                  RequiresConsentMixin, CaretakerFieldsMixin, VisitModelMixin, BaseUuidModel):
+If the subject does not require ICF, such as an infant, just don't include the `RequiresConsentMixin`:
+
+    class InfantVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin, BaseUuidModel):
     
-        consent_model = InfantBirthModel
-    
-        off_study_model = ('my_app', 'InfantOffStudy')
-    
-        death_report_model = ('my_app', 'InfantDeathReport')
-    
-        history = AuditTrail()
-    
-        def get_visit_reason_choices(self):
-            return VISIT_REASON
-    
-        def get_visit_reason_no_follow_up_choices(self):
-            """ Returns the visit reasons that do not imply any data
-            collection; that is, the subject is not available. """
-            dct = {}
-            for item in VISIT_REASON_NO_FOLLOW_UP_CHOICES:
-                dct.update({item: item})
-            return dct
-    
-        class Meta:
-            app_label = 'my_app'
+        class Meta(VisitModelMixin.Meta):
+            app_label = 'edc_example'
+
+In both cases a `OneToOneField` attr to `edc_example.Appointment` is added through the `VisitModelMixin` mixin, so `edc_example.Appointment` must exist.
 
 ### Declaring a CRF
 
-    from edc_metadata.managers import CrfMetaDataManager
-    from simple_history.models import HistoricalRecords as AuditTrail
-    from edc_base.model.models import BaseUuidModel
-    from edc_consent.models import RequiresConsentMixin
-    from edc_offstudy.models import OffStudyMixin
-    from edc_sync.models import SyncModelMixin
-    from edc_visit_tracking.managers import CrfModelManager
-    from edc_visit_tracking.models import CrfModelMixin
+The `CrfModelMixin` is required for all CRF models. CRF models have a key to the visit model.
 
-    class MyCrfModel(CrfModelMixin, SyncModelMixin, OffStudyMixin,
-                       RequiresConsentMixin, BaseUuidModel
+    class CrfOne(CrfModelMixin, OffstudyMixin, RequiresConsentMixin, UpdatesCrfMetadataModelMixin, BaseUuidModel):
     
-        consent_model = SubjectConsent
-        off_study_model = ('my_app', 'SubjectOffStudy')
         subject_visit = models.OneToOneField(SubjectVisit)
-
-        question_one = models.CharField(
-            max_lenght-10)
-        question_two = models.CharField(
-            max_lenght-10)
-        question_three = models.CharField(
-            max_lenght-10)
-        ...
-        objects = CrfModelManager()
-        history = AuditTrail()
-        entry_meta_data_manager = CrfMetaDataManager(MaternalVisit)
     
-        def natural_key(self):
-            return (self.subject_visit.natural_key(), )
-        natural_key.dependencies = ['my_app.subject_visit']
+        f1 = models.CharField(max_length=10, default='erik')
     
-        def __str__(self):
-            return str(self.get_visit())
-
+        vl = models.CharField(max_length=10, default=NO)
+    
+        rdb = models.CharField(max_length=10, default=NO)
+    
         class Meta:
-            app_label = 'my_app'
+            consent_model = 'edc_example.subjectconsent'
+            app_label = 'edc_example'
+            offstudy_model = 'edc_example.subjectoffstudy'
 
 ### Declaring forms:
 
@@ -118,10 +53,6 @@ The `VisitFormMixin` includes a number of common validations in the `clean` meth
         class Meta:
             model = SubjectVisit
 
-## `CrfModelMixin`
+### `PreviousVisitModelMixin`
 
-The `CrfModelMixin` is required for all CRF models. CRF models have a key to the visit model.
-
-## `PreviousVisitModelMixin`
-
-The `PreviousVisitModelMixin` ensures that visits are entered in sequence.
+The `PreviousVisitModelMixin` ensures that visits are entered in sequence. It is included with the `VisitModelMixin`.
