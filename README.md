@@ -9,14 +9,14 @@ Track study participant visit reports.
 
 For a subject that requires ICF would look like this:
 
-    class SubjectVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin, RequiresConsentMixin, BaseUuidModel):
+    class SubjectVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin, RequiresConsentModelMixin, BaseUuidModel):
     
         class Meta(VisitModelMixin.Meta):
             consent_model = 'edc_example.subjectconsent'
             app_label = 'edc_example'
 
 
-If the subject does not require ICF, such as an infant, just don't include the `RequiresConsentMixin`:
+If the subject does not require ICF, such as an infant, just don't include the `RequiresConsentModelMixin`:
 
     class InfantVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin, BaseUuidModel):
     
@@ -29,7 +29,7 @@ In both cases a `OneToOneField` attr to `edc_example.Appointment` is added throu
 
 The `CrfModelMixin` is required for all CRF models. CRF models have a key to the visit model.
 
-    class CrfOne(CrfModelMixin, OffstudyMixin, RequiresConsentMixin, UpdatesCrfMetadataModelMixin, BaseUuidModel):
+    class CrfOne(CrfModelMixin, OffstudyMixin, RequiresConsentModelMixin, UpdatesCrfMetadataModelMixin, BaseUuidModel):
     
         subject_visit = models.OneToOneField(SubjectVisit)
     
