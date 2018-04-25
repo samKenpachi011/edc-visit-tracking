@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/botswana-harvard/edc-visit-tracking.svg?branch=develop)](https://travis-ci.org/botswana-harvard/edc-visit-tracking) [![Coverage Status](https://coveralls.io/repos/botswana-harvard/edc-visit-tracking/badge.svg?branch=develop&service=github)](https://coveralls.io/github/botswana-harvard/edc-visit-tracking?branch=develop)
+[![Build Status](https://travis-ci.org/clinicedc/edc-visit-tracking.svg?branch=develop)](https://travis-ci.org/clinicedc/edc-visit-tracking) [![Coverage Status](https://coveralls.io/repos/clinicedc/edc-visit-tracking/badge.svg?branch=develop&service=github)](https://coveralls.io/github/clinicedc/edc-visit-tracking?branch=develop)
 
 # edc-visit-tracking
 
