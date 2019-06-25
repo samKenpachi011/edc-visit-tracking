@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import transaction
 
 
@@ -52,13 +51,14 @@ class VisitSequence:
                         visit_schedule_name=self.visit_schedule_name,
                         schedule_name=self.appointment.schedule_name,
                         visit_code=self.previous_visit_code)
-                except ObjectDoesNotExist:
-                    previous_visit = None
-                except MultipleObjectsReturned:
+                except Exception:
                     previous_appointment = self.appointment_model_cls.objects.filter(
                         subject_identifier=self.subject_identifier,
                         visit_code=self.previous_visit_code).order_by(
-                            '-visit_code_sequence')[0]
-                    previous_visit = self.model_cls.objects.get(
-                        appointment=previous_appointment)
+                            '-visit_code_sequence').first()
+                    if previous_appointment:
+                        previous_visit = self.model_cls.objects.get(
+                            appointment=previous_appointment)
+                    else:
+                        previous_visit = None
         return previous_visit
