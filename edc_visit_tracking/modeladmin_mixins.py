@@ -125,7 +125,7 @@ class VisitModelAdminMixin:
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'appointment':
             kwargs["queryset"] = db_field.related_model.objects.filter(
-                pk=request.GET.get('appointment', 0))
+                pk=request.GET.get('appointment'))
         return super().formfield_for_foreignkey(
             db_field, request, **kwargs)
 

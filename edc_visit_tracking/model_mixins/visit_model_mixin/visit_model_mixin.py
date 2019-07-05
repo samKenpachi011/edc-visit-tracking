@@ -8,13 +8,13 @@ from edc_base.model_managers.historical_records import HistoricalRecords
 from edc_constants.constants import YES, NO
 from edc_identifier.model_mixins import NonUniqueSubjectIdentifierFieldMixin
 from edc_visit_schedule.model_mixins import VisitScheduleModelMixin
+from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 
 from ...choices import VISIT_REASON
 from ...constants import FOLLOW_UP_REASONS, REQUIRED_REASONS, NO_FOLLOW_UP_REASONS
 from ...managers import VisitModelManager
 from ..previous_visit_model_mixin import PreviousVisitModelMixin
 from .visit_model_fields_mixin import VisitModelFieldsMixin
-from edc_visit_tracking.constants import MISSED_VISIT
 
 
 class VisitModelMixin(
@@ -53,6 +53,12 @@ class VisitModelMixin(
         self.visit_code = self.appointment.visit_code
         self.visit_code_sequence = self.appointment.visit_code_sequence
         self.require_crfs = NO if self.reason == MISSED_VISIT else YES
+
+        if self.reason == MISSED_VISIT:
+            self.require_crfs = NO
+        elif self.reason in [UNSCHEDULED, SCHEDULED]:
+            self.require_crfs = YES
+
         super().save(*args, **kwargs)
 
     def natural_key(self):
