@@ -1,17 +1,17 @@
 import copy
-
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models.deletion import PROTECT
 from edc_appointment.constants import IN_PROGRESS_APPT, COMPLETE_APPT
 from edc_base.model_managers.historical_records import HistoricalRecords
+from edc_constants.constants import FAILED_ELIGIBILITY
 from edc_constants.constants import YES, NO
 from edc_identifier.model_mixins import NonUniqueSubjectIdentifierFieldMixin
 from edc_visit_schedule.model_mixins import VisitScheduleModelMixin
-from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 
 from ...choices import VISIT_REASON
 from ...constants import FOLLOW_UP_REASONS, REQUIRED_REASONS, NO_FOLLOW_UP_REASONS
+from ...constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 from ...managers import VisitModelManager
 from ..previous_visit_model_mixin import PreviousVisitModelMixin
 from .visit_model_fields_mixin import VisitModelFieldsMixin
@@ -52,9 +52,8 @@ class VisitModelMixin(
         self.schedule_name = self.appointment.schedule_name
         self.visit_code = self.appointment.visit_code
         self.visit_code_sequence = self.appointment.visit_code_sequence
-        self.require_crfs = NO if self.reason == MISSED_VISIT else YES
 
-        if self.reason == MISSED_VISIT:
+        if self.reason in [MISSED_VISIT, FAILED_ELIGIBILITY]:
             self.require_crfs = NO
         elif self.reason in [UNSCHEDULED, SCHEDULED]:
             self.require_crfs = YES
@@ -67,6 +66,7 @@ class VisitModelMixin(
                 self.schedule_name,
                 self.visit_code,
                 self.visit_code_sequence)
+
     # change this if you are using another appointment model
     natural_key.dependencies = ['edc_appointment.appointment']
 
@@ -113,7 +113,7 @@ class VisitModelMixin(
     def _check_visit_reason_keys(self):
         user_keys = (
             [k for k in self.get_visit_reason_no_follow_up_choices().iterkeys()]
-            + [k for k in self.get_visit_reason_follow_up_choices().iterkeys()])
+            +[k for k in self.get_visit_reason_follow_up_choices().iterkeys()])
         default_keys = copy.deepcopy(REQUIRED_REASONS)
         if list(set(default_keys) - set(user_keys)):
             missing_keys = list(set(default_keys) - set(user_keys))
@@ -132,7 +132,8 @@ class VisitModelMixin(
                         REQUIRED_REASONS))
 
     def post_save_check_appointment_in_progress(self):
-        if self.reason in self.get_visit_reason_no_follow_up_choices():
+        if (self.reason in self.get_visit_reason_no_follow_up_choices()
+                or self.require_crfs != YES):
             if self.appointment.appt_status != COMPLETE_APPT:
                 self.appointment.appt_status = COMPLETE_APPT
                 self.appointment.save()
@@ -151,4 +152,4 @@ class VisitModelMixin(
         )
         ordering = (('subject_identifier', 'visit_schedule_name',
                      'schedule_name', 'visit_code', 'visit_code_sequence',
-                     'report_datetime', ))
+                     'report_datetime',))
