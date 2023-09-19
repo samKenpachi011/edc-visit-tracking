@@ -19,3 +19,4 @@ git+https://github.com/botswana-harvard/edc-facility@develop#egg=edc-facility
 git+https://github.com/botswana-harvard/edc-reference@develop#egg=edc-reference
 git+https://github.com/botswana-harvard/edc-model-admin@develop#egg=edc-model-admin
 git+https://github.com/botswana-harvard/edc-form-validators@develop#egg=edc-form-validators
+git+https://github.com/botswana-harvard/edc-calendar.git@develop#egg=edc-calendar
