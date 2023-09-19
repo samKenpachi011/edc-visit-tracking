@@ -114,7 +114,7 @@ class VisitModelMixin(
     def _check_visit_reason_keys(self):
         user_keys = (
             [k for k in self.get_visit_reason_no_follow_up_choices().iterkeys()]
-            +[k for k in self.get_visit_reason_follow_up_choices().iterkeys()])
+            + [k for k in self.get_visit_reason_follow_up_choices().iterkeys()])
         default_keys = copy.deepcopy(REQUIRED_REASONS)
         if list(set(default_keys) - set(user_keys)):
             missing_keys = list(set(default_keys) - set(user_keys))
