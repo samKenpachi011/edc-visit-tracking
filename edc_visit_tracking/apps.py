@@ -3,6 +3,8 @@ from django.apps import apps as django_apps
 from django.apps import AppConfig as DjangoAppConfig
 from django.core.exceptions import ImproperlyConfigured
 from django.core.management.color import color_style
+from dateutil.relativedelta import relativedelta
+import arrow
 from django.conf import settings
 
 style = color_style()
@@ -94,6 +96,7 @@ if settings.APP_NAME == 'edc_visit_tracking':
 
     from edc_metadata.apps import AppConfig as BaseEdcMetadataAppConfig
     from edc_facility.apps import AppConfig as BaseEdcFacilityAppConfig
+    from edc_protocol.apps import AppConfig as BaseEdcProtocolAppConfig
     from dateutil.relativedelta import MO, TU, WE, TH, FR
 
     class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):
@@ -103,3 +106,11 @@ if settings.APP_NAME == 'edc_visit_tracking':
         definitions = {
             'default': dict(days=[MO, TU, WE, TH, FR],
                             slots=[100, 100, 100, 100, 100])}
+
+    class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
+        """
+            Overrides BaseEdcProtocolAppConfig to update the
+            close protocol date
+        """
+        study_close_datetime = (
+            arrow.utcnow().ceil('hour') + relativedelta(years=1))

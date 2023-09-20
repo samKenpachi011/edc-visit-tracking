@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_appointment.models import Appointment
 from edc_base import get_utcnow
 from edc_facility.import_holidays import import_holidays
@@ -63,19 +63,23 @@ class TestPreviousVisit(TestCase):
         """Asserts requires previous visit to exist on create.
         """
         appointments = Appointment.objects.all().order_by('timepoint_datetime')
+
         SubjectVisit.objects.create(
             appointment=appointments[0],
             report_datetime=get_utcnow() - relativedelta(months=10),
             reason=SCHEDULED)
+
         self.assertRaises(
             PreviousVisitError, SubjectVisit.objects.create,
             appointment=appointments[2],
             report_datetime=get_utcnow() - relativedelta(months=8),
             reason=SCHEDULED)
+
         SubjectVisit.objects.create(
             appointment=appointments[1],
             report_datetime=get_utcnow() - relativedelta(months=10),
             reason=SCHEDULED)
+
         self.assertRaises(
             PreviousVisitError, SubjectVisit.objects.create,
             appointment=appointments[3],

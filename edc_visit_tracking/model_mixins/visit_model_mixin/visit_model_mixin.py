@@ -19,7 +19,8 @@ from .visit_model_fields_mixin import VisitModelFieldsMixin
 
 
 class VisitModelMixin(
-        VisitModelFieldsMixin, VisitScheduleModelMixin, NonUniqueSubjectIdentifierFieldMixin,
+        VisitModelFieldsMixin, VisitScheduleModelMixin,
+        NonUniqueSubjectIdentifierFieldMixin,
         PreviousVisitModelMixin, models.Model):
 
     """

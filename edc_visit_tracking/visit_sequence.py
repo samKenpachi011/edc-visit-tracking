@@ -51,14 +51,18 @@ class VisitSequence:
                         visit_schedule_name=self.visit_schedule_name,
                         schedule_name=self.appointment.schedule_name,
                         visit_code=self.previous_visit_code)
-                except Exception:
+                except self.model_cls.DoesNotExist:
                     previous_appointment = self.appointment_model_cls.objects.filter(
                         subject_identifier=self.subject_identifier,
                         visit_code=self.previous_visit_code).order_by(
                             '-visit_code_sequence').first()
                     if previous_appointment:
-                        previous_visit = self.model_cls.objects.get(
-                            appointment=previous_appointment)
+                        try:
+                            previous_visit = self.model_cls.objects.get(
+                                appointment=previous_appointment)
+                        except self.model_cls.DoesNotExist:
+                            previous_visit = None
+
                     else:
                         previous_visit = None
         return previous_visit
