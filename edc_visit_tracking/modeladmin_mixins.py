@@ -2,10 +2,12 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls.base import reverse
 from django.urls.exceptions import NoReverseMatch
-from edc_model_admin.model_admin_audit_fields_mixin import audit_fieldset_tuple,\
-    audit_fields
-from edc_visit_schedule.fieldsets import visit_schedule_fieldset_tuple,\
-    visit_schedule_fields
+from edc_model_admin.model_admin_audit_fields_mixin import (
+    audit_fieldset_tuple,
+    audit_fields)
+from edc_visit_schedule.fieldsets import (
+    visit_schedule_fieldset_tuple,
+    visit_schedule_fields)
 
 
 class CrfModelAdminMixin:

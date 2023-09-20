@@ -2,8 +2,9 @@ from django import forms
 from edc_constants.constants import OTHER, ALIVE, DEAD, YES, UNKNOWN
 from edc_constants.constants import PARTICIPANT, NO
 from edc_form_validators import FormValidator
-from edc_form_validators.base_form_validator import REQUIRED_ERROR,\
-    INVALID_ERROR
+from edc_form_validators.base_form_validator import (
+    REQUIRED_ERROR,
+    INVALID_ERROR)
 
 from ..constants import MISSED_VISIT, LOST_VISIT, UNSCHEDULED
 from ..visit_sequence import VisitSequence, VisitSequenceError
