@@ -25,4 +25,3 @@ git+https://github.com/botswana-harvard/edc-sms.git@develop#egg=edc_sms
 django_q
 arrow
 pytz
-backports.zoneinfo==0.2.1
