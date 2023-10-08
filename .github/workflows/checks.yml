@@ -38,7 +38,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          coverage run --source=edc_visiting_tracking manage.py test
+          coverage run --source=edc_visit_tracking manage.py test
           coverage xml -i
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
