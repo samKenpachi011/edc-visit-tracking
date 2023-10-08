@@ -31,6 +31,10 @@ jobs:
           pip install flake8 Django coverage
           pip install coveralls codecov
 
+      - name: Install pycups
+        run: |
+          sudo apt-get install libcups2-dev wamerican
+
       - name: Run Flake8 Lint and Check
         run: |
           flake8
