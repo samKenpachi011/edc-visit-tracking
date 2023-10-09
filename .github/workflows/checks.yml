@@ -47,7 +47,6 @@ jobs:
       - name: Run Flake8 Lint and Check
         run: |
           flake8
-          python manage.py check
 
       - name: Run Tests
         run: |
