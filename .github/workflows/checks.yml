@@ -35,6 +35,14 @@ jobs:
           pip install flake8 Django coverage
           pip install coveralls codecov
 
+      # - name: Create required directories and adjust permissions
+      #   run: |
+      #     sudo mkdir -p /etc/edc_visit_tracking
+      #     sudo chown -R $USER:$USER /etc/edc_visit_tracking
+      - name: Create directory for keys
+        run: mkdir -p ~/crypto_fields
+      - name: Set environment variable for key path
+        run: echo "KEY_PATH=${HOME}/crypto_fields" >> $GITHUB_ENV
 
       - name: Run Flake8 Lint and Check
         run: |
