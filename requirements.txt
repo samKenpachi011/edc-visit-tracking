@@ -15,13 +15,13 @@ git+https://github.com/botswana-harvard/edc-protocol@develop#egg=edc-protocol
 git+https://github.com/botswana-harvard/edc-metadata-rules@develop#egg=edc-metadata-rules
 git+https://github.com/botswana-harvard/edc-lab@develop#egg=edc-lab
 git+https://github.com/botswana-harvard/edc-label@develop#egg=edc-label
-git+https://github.com/botswana-harvard/edc-facility@develop#egg=edc-facility
 git+https://github.com/botswana-harvard/edc-reference@develop#egg=edc-reference
 git+https://github.com/botswana-harvard/edc-model-admin@develop#egg=edc-model-admin
 git+https://github.com/botswana-harvard/edc-form-validators@develop#egg=edc-form-validators
 git+https://github.com/botswana-harvard/edc-calendar.git@develop#egg=edc-calendar
 git+https://github.com/botswana-harvard/edc-search.git@develop#egg=edc_search
-git+https://github.com/botswana-harvard/edc-sms.git@develop#egg=edc_sms
+git+https://github.com/botswana-harvard/edc-sms.git@develop#egg=edc_sm
+git+https://github.com/samKenpachi011/edc-facility.git
 django_q
 arrow
 pytz

@@ -19,16 +19,17 @@ APP_NAME = 'edc_visit_tracking'
 ETC_DIR = os.path.join(BASE_DIR, 'etc')
 SITE_ID = 40
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-DJANGO_AUTO_CREATE_KEYS = True
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ztj1y9k+4m@k(cut_mx6k&x&_*)-g0e#nfz=9)-#296j3*hbrq'
+# KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
